@@ -1,6 +1,7 @@
 import os
 import ccxt
 import time
+import sys
 from flask import Flask
 from threading import Thread
 
@@ -21,17 +22,20 @@ def home():
 
 def run_bot():
     print("ボット起動...")
+    sys.stdout.flush()  # ログを強制出力
     while True:
         try:
             ticker = exchange.fetch_ticker('BTC/JPY')
             print(f"現在のBTC価格: {ticker['last']}")
+            sys.stdout.flush()  # ログを強制出力
             time.sleep(60)
         except Exception as e:
             print(f"エラー: {e}")
+            sys.stdout.flush()
             time.sleep(60)
 
 if __name__ == '__main__':
-    # WebサーバーとBotを同時に動かす
-    Thread(target=run_bot).start()
+    # Flaskとボットを同時起動
+    Thread(target=run_bot, daemon=True).start()
     port = int(os.environ.get('PORT', 10000))
     app.run(host='0.0.0.0', port=port)
