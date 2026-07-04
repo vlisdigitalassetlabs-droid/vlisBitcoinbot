@@ -7,7 +7,7 @@ from threading import Thread
 
 app = Flask(__name__)
 
-# Bitbankの設定
+# Bitbank設定
 api_key = os.environ.get('API_KEY')
 api_secret = os.environ.get('API_SECRET')
 
